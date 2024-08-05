@@ -1,5 +1,5 @@
-# file: .github/workflows/setup_run_linter.yml
-name: setup_run_linter
+# file: .github/workflows/show-directory.yml
+name: hello-world
 # on – определяет события, которые запускают воркфлоу
 on: push
 jobs:
@@ -9,6 +9,9 @@ jobs:
     # операционная система для работы воркфлоу
     runs-on: ubuntu-latest
     steps: # список шагов, которые надо выполнить
-      - setup: make setup
-        install: make install
-        test: make test
+      # экшен — выполняет какую-то задачу
+      # checkout — клонирует репозиторий
+      - uses: actions/checkout@v3
+      # run – произвольная bash-команда
+      # ls -la выведет содержимое текущего репозитория
+      - run: make setup install test lint
