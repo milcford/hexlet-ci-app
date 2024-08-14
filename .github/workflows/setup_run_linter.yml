@@ -1,4 +1,5 @@
-name: setup_run_linter
+# file: .github/workflows/show-directory.yml
+name: show-directory
 # on – определяет события, которые запускают воркфлоу
 on: push
 jobs:
@@ -8,15 +9,9 @@ jobs:
     # операционная система для работы воркфлоу
     runs-on: ubuntu-latest
     steps: # список шагов, которые надо выполнить
-      - uses: actions/checkout@master
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - run: npm ci
-      - run: npm test
-      - run: make setup install test lint
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      # экшен — выполняет какую-то задачу
+      # checkout — клонирует репозиторий
+      - uses: actions/checkout@v3
+      # run – произвольная bash-команда
+      # ls -la выведет содержимое текущего репозитория
+      - run: make setup test lint
