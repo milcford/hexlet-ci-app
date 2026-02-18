@@ -1,17 +1,29 @@
 # file: .github/workflows/show-directory.yml
 name: show-directory
-# on – определяет события, которые запускают воркфлоу
 on: push
 jobs:
-  # build – произвольно выбранное имя задания
-  # их может быть больше одного
   build:
-    # операционная система для работы воркфлоу
     runs-on: ubuntu-latest
-    steps: # список шагов, которые надо выполнить
-      # экшен — выполняет какую-то задачу
-      # checkout — клонирует репозиторий
+    steps:
       - uses: actions/checkout@v3
-      # run – произвольная bash-команда
-      # ls -la выведет содержимое текущего репозитория
-      - run: make setup test lint
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: make setup
+
+      - name: Clean Strapi cache
+        run: |
+          rm -rf node_modules/.cache
+          rm -rf build
+          rm -rf .strapi
+          rm -rf admin/build
+
+      - name: Build admin panel
+        run: make build
+
+      - name: Run tests and lint
+        run: make test lint
