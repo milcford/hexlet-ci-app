@@ -12,15 +12,19 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
+      - name: Install dependencies (first pass)
         run: make setup
 
-      - name: Clean Strapi cache
+      - name: Clean EVERYTHING
         run: |
-          rm -rf node_modules/.cache
+          rm -rf node_modules
           rm -rf build
           rm -rf .strapi
           rm -rf admin/build
+          rm -rf .cache
+
+      - name: Install dependencies (fresh)
+        run: yarn install --frozen-lockfile
 
       - name: Build admin panel
         run: make build
